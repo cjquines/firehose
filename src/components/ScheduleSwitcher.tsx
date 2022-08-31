@@ -176,6 +176,7 @@ export function ScheduleSwitcher(props: {
       const onConfirm = () => {
         firehose.renameSave(saveId, name);
         setIsRenaming(false);
+        setName('');
       };
       const onCancel = () => {
         setName(currentName);
@@ -195,6 +196,7 @@ export function ScheduleSwitcher(props: {
     );
     const onRename = () => setIsRenaming(true);
     const onSave = () => firehose.addSave(Boolean(saveId));
+    const onClone = () => firehose.addSave(false);
     const renderButtons = () => (
       <>
         {saveId && <SmallButton onClick={onRename}>Rename</SmallButton>}
@@ -206,6 +208,7 @@ export function ScheduleSwitcher(props: {
           />
         )}
         <SmallButton onClick={onSave}>{saveId ? "New" : "Save"}</SmallButton>
+        {saveId && <SmallButton onClick={onClone}>Clone</SmallButton>}
         <ExportModal firehose={firehose} />
       </>
     );
