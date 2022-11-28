@@ -6,8 +6,7 @@ Install:
 
 - Python 3, at least Python 3.6.
 - Node.js 16, at least Node 16.16.
-  - Careful, the latest version is 18!
-  - One way manage Node versions is using [nvm](https://github.com/nvm-sh/nvm).
+  - My favorite way is through [nvm](https://github.com/nvm-sh/nvm).
 
 In the root directory, run:
 
@@ -18,25 +17,31 @@ In the root directory, run:
 
 ### Normal updating
 
-- To update schedules, `cd scrapers` then run `python update.py`.
-  - This updates the file `public/latest.json`.
-  - It's important for the working directory to be `scrapers`.
-  - On the server, there should be a cron script running this every few hours.
-- To update the frontend, run `npm build`.
-  - Then run `./deploy.sh` or something to deploy it. Need to figure this out.
+- To update schedules, run `python update.py`. This runs three steps:
+  - `python scrapers/coursews.py` to get the class schedules.
+  - `python scrapers/catalog.py` to get the class descriptions.
+  - `python scrapers/package.py` to bundle schedules, descriptions, and evaluations into a `json` file.
+- To update evaluations, run `python update_evals.py`.
+- To update the frontend, run `npm build`. Then run `./deploy.sh` or something.
   - You can run `npm start` for the frontend hotloader.
 
 ### Changing semesters
 
-Let's say you're updating from e.g. Spring 2023 to Fall 2023.
+Let's say you're updating from e.g. IAP 2022 to Fall 2022.
 
 - First, archive the old semester:
-  - Run `mv public/latest.json public/s23.json`.
+  - Run `npm build`.
+  - Run `mkdir -p public/semesters/i22/static`.
+  - Run `cp -r build/static/. public/semesters/i22/static`.
+  - Run `cp build/full.json public/semesters/i22/full.json`.
+  - Run `cp build/index.html public/semesters/i22/iap.html`.
 - Then, update the new semester:
   - Open `public/latestTerm.json`.
-  - Change `urlName` to `f23`.
-  - Update the dates per [Registrar](https://registrar.mit.edu/calendar).
-- Run the normal update process above.
+  - Change `urlName` to `f22`.
+- After running `npm build`, copy everything in `build` to e.g. `public/semesters/i22` for IAP 2022.
+- Rename `public/semesters/i22/index.html` to `iap.html`.
+- Update `public/latestTerm.json` for the new semester. For example, for Fall 2022:
+- Run the normal update process: `python update.py && npm build`.
 
 ## Development notes
 
@@ -45,7 +50,7 @@ Let's say you're updating from e.g. Spring 2023 to Fall 2023.
 *I want to change...*
 
 - *...the data available to Firehose.*
-  - The entry point is `scrapers/update.py`.
+  - The entry point is `scrapers/update.py` (and `update_evals.py` for evaluation data).
   - This goes through `src/components/App.tsx`, which looks for the data.
   - The exit point is through the constructor of `Firehose` in `src/lib/firehose.ts`.
 - *...the way Firehose behaves.*
