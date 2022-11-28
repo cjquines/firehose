@@ -204,9 +204,6 @@ export class Class {
 
   /** Name, e.g. "Introduction to Machine Learning". */
   get name(): string {
-    if (this.rawClass.on) {
-      return `[${this.rawClass.on}] ${this.rawClass.n}`;
-    }
     return this.rawClass.n;
   }
 
@@ -222,7 +219,7 @@ export class Class {
 
   /** Old number, e.g. "6.036" for 6.3900. May or may not exist. */
   get oldNumber(): string | undefined {
-    return this.rawClass.on;
+    return /^\[(.*)\]/.exec(this.name)?.[1];
   }
 
   /** Course, e.g. "6". */

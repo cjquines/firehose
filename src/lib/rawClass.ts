@@ -6,13 +6,11 @@ export type RawSection = [Array<RawTimeslot>, string];
 
 /** The raw class format produced by combiner_ws.py. */
 export type RawClass = {
-  /** Class number, e.g. "6.3900" */
+  /** Class number, e.g. "6.036" */
   no: string;
-  /** Old class number, e.g. "6.036" */
-  on: string;
   /** Course number, e.g. "6" */
   co: string;
-  /** Class number without course, e.g. "3900" */
+  /** Class number without course, e.g. "036" */
   cl: string;
   /** True if some section is not scheduled yet */
   tb: boolean;
