@@ -47,8 +47,7 @@ def is_repeat_allowed(html):
 
 
 def get_url(html):
-    url = html.find(text=re.compile("https?://(?!whereis)"))
-    if url:
+    if url := html.find(text=re.compile("https?://(?!whereis)")):
         return url
     return ""
 
@@ -91,9 +90,7 @@ def get_course_data(filtered_html):
         "hf": half,
         "lm": limited,
     }
-
-    old_course_num = get_old_course_num(filtered_html)
-    if old_course_num:
+    if old_course_num := get_old_course_num(filtered_html):
         course_data["on"] = old_course_num
 
     return course_data
@@ -155,8 +152,7 @@ def scrape_courses_from_page(courses, href):
     course_nums_list = []
     contents = []
     for ele in classes_content.contents:
-        anchors = get_anchors_with_classname(ele)
-        if anchors:
+        if anchors := get_anchors_with_classname(ele):
             new_course_nums = [anchor["name"] for anchor in anchors]
             # This means the course listed is a class range (e.g. 11.S196-11.S199)
             # Therefore, we continue looking for content but also add an extra course_num
