@@ -1,6 +1,14 @@
-# artifacts
-scrapers/catalog.json
-scrapers/fireroad.json
+password
+chromedriver*
+geckodriver*
+evaluations
+evaluations_IAP
+old_scripts/evaluations.json
+old_scripts/professors.json
+*~
+#*
+debug.log
+.DS_Store
 
 # python
 __pycache__
